@@ -3,53 +3,72 @@
 @tailwind utilities;
 
 /* ============================================================
-   VARIABLES DE THÈME — Dark (défaut) + Light
-   Toutes les couleurs du site passent par ces variables.
-   Le ThemeProvider applique data-theme="light" sur <html>.
+   THÈME SKY (défaut) + DARK via [data-theme="dark"]
    ============================================================ */
 :root {
-  /* --- Mode DARK (défaut) --- */
-  --bg-primary:     #09090E;       /* Fond principal : noir riche */
-  --bg-secondary:   #0F0F17;       /* Fond surfaces : légèrement plus clair */
+  --bg-primary:     transparent;
+  --bg-secondary:   rgba(255,255,255,0.20);
+  --bg-card:        rgba(255,255,255,0.32);
+  --text-primary:   #0B1929;
+  --text-secondary: rgba(11,25,41,0.65);
+  --text-muted:     rgba(11,25,41,0.38);
+  --accent:         #1565C0;
+  --accent-glow:    rgba(21,101,192,0.25);
+  --accent-2:       #7C3AED;
+  --chrome:         #4A6FA5;
+  --border:         rgba(255,255,255,0.55);
+  --border-hover:   rgba(255,255,255,0.90);
+  --glass:          rgba(255,255,255,0.30);
+  --glass-border:   rgba(255,255,255,0.60);
+  --shadow:         rgba(0,40,120,0.15);
+}
+
+[data-theme="dark"] {
+  --bg-primary:     #09090E;
+  --bg-secondary:   #0F0F17;
   --bg-card:        rgba(255,255,255,0.04);
-  --text-primary:   #F2F0EB;       /* Blanc cassé chaud */
-  --text-secondary: rgba(242,240,235,0.5);
+  --text-primary:   #F2F0EB;
+  --text-secondary: rgba(242,240,235,0.50);
   --text-muted:     rgba(242,240,235,0.25);
-  --accent:         #00E5FF;       /* Cyan vif — accent principal */
+  --accent:         #00E5FF;
   --accent-glow:    rgba(0,229,255,0.15);
-  --accent-2:       #7C3AED;       /* Violet accent secondaire */
-  --chrome:         #A8A8B8;       /* Chrome / argent */
+  --accent-2:       #7C3AED;
+  --chrome:         #A8A8B8;
   --border:         rgba(255,255,255,0.07);
   --border-hover:   rgba(255,255,255,0.15);
   --glass:          rgba(255,255,255,0.04);
   --glass-border:   rgba(255,255,255,0.08);
-  --shadow:         rgba(0,0,0,0.6);
-}
-
-[data-theme="light"] {
-  /* --- Mode LIGHT (élégant, luxe, raffiné) --- */
-  --bg-primary:     #F0EDE8;       /* Blanc cassé chaud — pas de blanc pur */
-  --bg-secondary:   #FAFAF8;       /* Surface légèrement plus claire */
-  --bg-card:        rgba(255,255,255,0.7);
-  --text-primary:   #0A0A12;       /* Noir quasi pur */
-  --text-secondary: rgba(10,10,18,0.55);
-  --text-muted:     rgba(10,10,18,0.3);
-  --accent:         #0057FF;       /* Bleu électrique — accent light mode */
-  --accent-glow:    rgba(0,87,255,0.12);
-  --accent-2:       #6D28D9;
-  --chrome:         #6B6B7B;
-  --border:         rgba(0,0,0,0.07);
-  --border-hover:   rgba(0,0,0,0.15);
-  --glass:          rgba(255,255,255,0.6);
-  --glass-border:   rgba(0,0,0,0.06);
-  --shadow:         rgba(0,0,0,0.12);
+  --shadow:         rgba(0,0,0,0.60);
 }
 
 /* ============================================================
-   TRANSITIONS DE THÈME — tout change en 300ms
+   BACKGROUND — ciel dégradé sur html (visible partout en sky mode)
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+  background: linear-gradient(
+    180deg,
+    #1565C0 0%,
+    #1976D2 6%,
+    #2196F3 14%,
+    #42A5F5 26%,
+    #64B5F6 38%,
+    #90CAF9 52%,
+    #BBDEFB 67%,
+    #E3F2FD 83%,
+    #F0F9FF 100%
+  );
+  background-attachment: fixed;
+}
+
+html[data-theme="dark"] {
+  background: #09090E;
+}
+
+/* ============================================================
+   BASE
    ============================================================ */
 *, *::before, *::after {
-  cursor: none !important;
   box-sizing: border-box;
   transition:
     background-color 0.3s ease,
@@ -58,22 +77,12 @@
     box-shadow 0.3s ease;
 }
 
-/* Exceptions — pas de transition sur les animations */
-.no-transition,
-canvas,
-[class*="motion"] {
+.no-transition, canvas, [class*="motion"] {
   transition: none !important;
 }
 
-/* ============================================================
-   BASE
-   ============================================================ */
-html {
-  scroll-behavior: smooth;
-}
-
 body {
-  background-color: var(--bg-primary);
+  background-color: transparent;
   color: var(--text-primary);
   overflow-x: hidden;
   font-family: var(--font-space-grotesk), sans-serif;
@@ -81,76 +90,74 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html[data-theme="dark"] body {
+  background-color: var(--bg-primary);
+}
+
 /* ============================================================
    SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; opacity: 0.6; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
 /* ============================================================
    COMPOSANTS UTILITAIRES
    ============================================================ */
 @layer components {
 
-  /* Glassmorphism adaptatif selon le thème */
   .glass-card {
     background: var(--glass);
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px var(--shadow);
   }
 
-  /* Texte avec halo accentué */
   .neon-text {
     text-shadow:
-      0 0 12px var(--accent-glow),
-      0 0 24px var(--accent-glow);
+      0 0 20px rgba(255,255,255,0.8),
+      0 2px 40px rgba(100,181,246,0.6);
   }
 
-  /* Bordure cyber */
   .cyber-border {
     border: 1px solid var(--border);
-    box-shadow:
-      0 0 20px var(--accent-glow),
-      inset 0 0 20px rgba(0,0,0,0.05);
+    box-shadow: 0 0 20px var(--accent-glow);
   }
 
-  /* Bouton primaire */
   .btn-primary {
     @apply font-orbitron text-[11px] tracking-[0.25em] uppercase px-8 py-4;
     background: var(--accent);
-    color: var(--bg-primary);
+    color: white;
     transition: filter 0.2s ease, transform 0.15s ease !important;
+    box-shadow: 0 4px 20px var(--accent-glow);
   }
   .btn-primary:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
+    filter: brightness(1.15);
+    transform: translateY(-2px);
   }
 
-  /* Bouton secondaire */
   .btn-secondary {
     @apply font-orbitron text-[11px] tracking-[0.25em] uppercase px-8 py-4;
     border: 1px solid var(--border-hover);
     color: var(--accent);
-    background: transparent;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
     transition: all 0.2s ease !important;
   }
   .btn-secondary:hover {
     border-color: var(--accent);
-    background: var(--accent-glow);
-    transform: translateY(-1px);
+    background: rgba(255,255,255,0.5);
+    transform: translateY(-2px);
   }
 
-  /* Section label */
   .section-label {
     @apply font-orbitron text-[10px] tracking-[0.6em] uppercase;
     color: var(--accent);
   }
 
-  /* Dégradé de texte premium */
   .gradient-text {
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -158,15 +165,15 @@ body {
 }
 
 /* ============================================================
-   ANIMATIONS OPTIMISÉES — GPU uniquement (transform + opacity)
+   ANIMATIONS
    ============================================================ */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50%       { transform: translateY(-8px); }
 }
 
 @keyframes scan-line {
-  0% { transform: translateY(-100%); }
+  0%   { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
 }
 
@@ -188,22 +195,11 @@ body {
   50%       { box-shadow: 0 0 24px var(--accent-glow), 0 0 48px var(--accent-glow); }
 }
 
-/* ============================================================
-   SMOOTH SCROLL PREMIUM
-   ============================================================ */
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
+@keyframes drift {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(120vw); }
 }
 
-/* ============================================================
-   PAGE TRANSITIONS (ajouté sur les sections via Framer Motion)
-   ============================================================ */
-.page-enter {
-  opacity: 0;
-  transform: translateY(12px);
-}
-.page-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }

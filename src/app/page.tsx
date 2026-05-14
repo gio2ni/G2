@@ -26,31 +26,31 @@ export default function HomePage() {
       {/* ================================================================
           1. HERO — Fullscreen 3D
           ================================================================ */}
-      <section className="relative h-screen w-full overflow-hidden"
-               style={{ background: 'var(--bg-primary)' }}>
-        {/* Grille subtile */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-
-        {/* Dégradé bas pour transition douce */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
-             style={{ background: 'linear-gradient(to bottom, transparent, var(--bg-primary))' }} />
-
-        {/* Canvas 3D */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Canvas 3D transparent — nuages qui dérivent */}
         <div className="absolute inset-0">
           <HeroScene />
         </div>
 
+        {/* Dégradé bas pour transition vers la section suivante */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
+             style={{ background: 'linear-gradient(to bottom, transparent, rgba(224,242,254,0.6))' }} />
+
         {/* Texte overlay */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-          <p className="section-label mb-5 animate-flicker">Collection 01 — 2025</p>
+          <p className="section-label mb-6 animate-flicker">Collection 01 — 2025</p>
 
-          <h1 className="font-orbitron font-black text-[5.5rem] md:text-[9rem] leading-none mb-5 select-none neon-text"
-              style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+          <h1 className="font-orbitron font-black text-[5.5rem] md:text-[9rem] leading-none mb-5 select-none"
+              style={{
+                color: 'white',
+                letterSpacing: '-0.02em',
+                textShadow: '0 2px 30px rgba(21,101,192,0.4), 0 0 60px rgba(255,255,255,0.3)',
+              }}>
             G2
           </h1>
 
           <p className="font-space-grotesk text-lg md:text-xl max-w-md mb-10 leading-relaxed"
-             style={{ color: 'var(--text-secondary)' }}>
+             style={{ color: 'rgba(255,255,255,0.85)', textShadow: '0 1px 8px rgba(0,0,0,0.2)' }}>
             Wear the signal. Own the void.
           </p>
 
@@ -62,10 +62,10 @@ export default function HomePage() {
 
         {/* Indicateur de scroll */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
-          <p className="font-orbitron text-[8px] tracking-[0.5em] uppercase" style={{ color: 'var(--text-muted)' }}>
+          <p className="font-orbitron text-[8px] tracking-[0.5em] uppercase" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Scroll
           </p>
-          <div className="w-px h-12 animate-float" style={{ background: 'linear-gradient(to bottom, var(--accent), transparent)' }} />
+          <div className="w-px h-12 animate-float" style={{ background: 'linear-gradient(to bottom, white, transparent)' }} />
         </div>
       </section>
 
@@ -91,8 +91,8 @@ export default function HomePage() {
       {/* ================================================================
           3. NOUVELLE COLLECTION — Bande visuelle large
           ================================================================ */}
-      <section className="py-20 overflow-hidden relative" style={{ background: 'var(--bg-secondary)' }}>
-        <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
+      <section className="py-20 overflow-hidden relative">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(2px)' }} />
 
         <div className="max-w-7xl mx-auto px-5 md:px-8">
           <div className="flex flex-col lg:flex-row gap-10 items-center">
@@ -183,11 +183,10 @@ export default function HomePage() {
       {/* ================================================================
           5. MANIFESTE
           ================================================================ */}
-      <section id="manifesto" className="py-28 px-5 relative overflow-hidden"
-               style={{ background: 'var(--bg-secondary)' }}>
-        <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
+      <section id="manifesto" className="py-28 px-5 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)' }} />
         <div className="absolute top-0 left-0 right-0 h-px"
-             style={{ background: 'linear-gradient(to right, transparent, var(--accent), transparent)', opacity: 0.3 }} />
+             style={{ background: 'linear-gradient(to right, transparent, white, transparent)', opacity: 0.6 }} />
 
         <div className="relative max-w-2xl mx-auto text-center">
           <p className="section-label mb-10">Manifeste</p>

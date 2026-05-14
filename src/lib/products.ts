@@ -27,7 +27,7 @@ export const products: Product[] = [
     colors: ['#000000', '#00FFFF'],
     description:
       'Coupe oversize. Coton heavyweight 380gsm. Broderie grille G2 sur la poitrine. Silhouette drop-shoulder.',
-    image: 'https://placehold.co/600x800/000000/00FFFF?text=G2+GRID+TEE',
+    image: '/images/tee-001.jpg',
     featured: true,
     isNew: true,
   },
@@ -40,7 +40,7 @@ export const products: Product[] = [
     colors: ['#000000', '#808080'],
     description:
       'Intérieur polaire brossé. Fermeture éclair chrome réfléchissante. Coupe drop-shoulder. Logo G2 en relief.',
-    image: 'https://placehold.co/600x800/000000/7C3AED?text=G2+CHROME+HOODIE',
+    image: '/images/hoodie-001.jpg',
     featured: true,
     isNew: false,
   },
@@ -53,7 +53,7 @@ export const products: Product[] = [
     colors: ['#000000'],
     description:
       'Coque technique imperméable. Coutures soudées. Passepoil néon cyan. Fermetures magnétiques cachées.',
-    image: 'https://placehold.co/600x800/000000/C0C0C0?text=G2+RECON+JACKET',
+    image: '/images/jacket-001.jpg',
     featured: true,
     isNew: true,
   },
@@ -66,7 +66,7 @@ export const products: Product[] = [
     colors: ['#000000', '#ffffff'],
     description:
       'Coupe regular. Impression sérigraphie motif noise. 100% coton biologique. Lavage à 30°.',
-    image: 'https://placehold.co/600x800/000000/ffffff?text=G2+STATIC+TEE',
+    image: '/images/tee-002.jpg',
     featured: false,
     isNew: true,
   },
@@ -79,7 +79,7 @@ export const products: Product[] = [
     colors: ['#000000'],
     description:
       'Casquette 6 panneaux structurée. Monogramme G2 brodé. Sangle ajustable métal brossé.',
-    image: 'https://placehold.co/600x800/000000/00FFFF?text=G2+CYBER+CAP',
+    image: '/images/cap-001.jpg',
     featured: false,
     isNew: false,
   },
@@ -92,7 +92,7 @@ export const products: Product[] = [
     colors: ['#000000'],
     description:
       'Zip intégral. Poche kangourou. Panneaux de ventilation découpés au laser. Tissu anti-boulochage.',
-    image: 'https://placehold.co/600x800/111111/FF00FF?text=G2+PHANTOM+HOODIE',
+    image: '/images/hoodie-002.jpg',
     featured: false,
     isNew: false,
   },

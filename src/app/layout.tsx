@@ -7,7 +7,6 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CartSidebar from '@/components/ui/CartSidebar';
 import Loader from '@/components/ui/Loader';
-import CustomCursor from '@/components/ui/CustomCursor';
 
 const orbitron = Orbitron({
   subsets: ['latin'],
@@ -40,22 +39,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var t = localStorage.getItem('g2-theme') || 'dark';
-                  document.documentElement.setAttribute('data-theme', t);
-                } catch(e) {
-                  document.documentElement.setAttribute('data-theme', 'dark');
-                }
-              })();
-            `,
+            __html: `(function(){try{if(localStorage.getItem('g2-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();`,
           }}
         />
 
         <ThemeProvider>
           <Loader />
-          <CustomCursor />
           <Navbar />
           <main>{children}</main>
           <Footer />

@@ -10,15 +10,8 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { getProductById, products } from '@/lib/products';
 import AddToCartButton from '@/components/ui/AddToCartButton';
-
-// Mini-scène 3D pour visualiser le produit (même scène que la homepage)
-const ProductViewer = dynamic(() => import('@/components/3d/HeroScene'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-black" />,
-});
 
 // Pré-génère les routes statiques pour tous les produits au moment du build
 export async function generateStaticParams() {
@@ -48,25 +41,17 @@ export default function ProductPage({
       {/* ---- Layout 2 colonnes ---- */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
-        {/* ---- Colonne gauche : visualiseur 3D + image ---- */}
+        {/* ---- Colonne gauche : image produit ---- */}
         <div className="relative">
-          {/* Viewer 3D — même scène que le hero, taille réduite */}
-          <div className="aspect-square bg-black border border-white/10 relative overflow-hidden">
-            <div className="absolute inset-0">
-              <ProductViewer />
-            </div>
-
-            {/* Overlay image produit (par-dessus le viewer à mi-opacité) */}
-            <div className="absolute bottom-0 left-0 right-0 h-2/3 pointer-events-none">
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                className="object-cover object-center opacity-40 mix-blend-luminosity"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
-
+          <div className="relative aspect-[3/4] overflow-hidden" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
+            />
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
               {product.isNew && (

@@ -1,84 +1,77 @@
 'use client';
 
-// Écran de chargement plein-écran
-// Apparaît au premier chargement de la page et disparaît après 2.5 secondes
-// Framer Motion gère l'animation d'apparition et de disparition
+// Loader premium — disparaît après 2s, animation plus rapide et légère
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Loader() {
   const [visible, setVisible] = useState(true);
+  const [progress, setProgress] = useState(0);
 
-  // Disparaît automatiquement après 2.5 secondes
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), 2500);
-    return () => clearTimeout(timer);
+    // Simule une progression fluide
+    const interval = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) { clearInterval(interval); return 100; }
+        return p + 4;
+      });
+    }, 60);
+
+    const timer = setTimeout(() => setVisible(false), 2000);
+    return () => { clearTimeout(timer); clearInterval(interval); };
   }, []);
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
+          style={{ background: 'var(--bg-primary)' }}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: 'easeInOut' }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
-          {/* Ligne de scan cyberpunk qui descend */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="w-full h-px bg-neon-cyan/20 animate-scan-line" />
+          {/* Ligne scan */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="w-full h-px opacity-20 animate-scan-line"
+                 style={{ background: 'var(--accent)' }} />
           </div>
 
-          {/* Grille de fond */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-30" />
-
-          {/* Logo G2 — apparaît avec scale */}
+          {/* Contenu centré */}
           <motion.div
-            className="relative z-10 flex flex-col items-center gap-6"
-            initial={{ opacity: 0, scale: 0.8 }}
+            className="relative flex flex-col items-center gap-5"
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
           >
-            {/* Logo principal */}
-            <h1 className="font-orbitron font-black text-9xl text-white neon-text-cyan leading-none">
+            {/* Logo */}
+            <h1 className="font-orbitron font-black text-8xl leading-none neon-text"
+                style={{ color: 'var(--text-primary)' }}>
               G2
             </h1>
 
-            {/* Tagline */}
-            <motion.p
-              className="font-orbitron text-xs text-neon-cyan tracking-[0.6em] uppercase"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
+            {/* Sous-titre */}
+            <p className="font-orbitron text-[10px] tracking-[0.6em] uppercase animate-flicker"
+               style={{ color: 'var(--accent)' }}>
               Future Luxury
-            </motion.p>
+            </p>
 
             {/* Barre de progression */}
-            <motion.div
-              className="w-48 h-px bg-white/10 overflow-hidden mt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.3 }}
-            >
+            <div className="w-36 h-px mt-3 overflow-hidden"
+                 style={{ background: 'var(--border)' }}>
               <motion.div
-                className="h-full bg-neon-cyan"
-                initial={{ width: '0%' }}
-                animate={{ width: '100%' }}
-                transition={{ delay: 0.5, duration: 1.8, ease: 'easeOut' }}
+                className="h-full"
+                style={{ background: 'var(--accent)', width: `${progress}%` }}
+                transition={{ ease: 'easeOut' }}
               />
-            </motion.div>
+            </div>
 
-            {/* Texte de chargement */}
-            <motion.p
-              className="font-orbitron text-[10px] text-white/20 tracking-[0.5em] uppercase"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-            >
-              Chargement...
-            </motion.p>
+            {/* Pourcentage */}
+            <p className="font-orbitron text-[9px] tracking-widest"
+               style={{ color: 'var(--text-muted)' }}>
+              {progress}%
+            </p>
           </motion.div>
         </motion.div>
       )}

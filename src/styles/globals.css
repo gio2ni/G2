@@ -3,13 +3,66 @@
 @tailwind utilities;
 
 /* ============================================================
-   CURSEUR — Le CustomCursor remplace le curseur système
+   VARIABLES DE THÈME — Dark (défaut) + Light
+   Toutes les couleurs du site passent par ces variables.
+   Le ThemeProvider applique data-theme="light" sur <html>.
    ============================================================ */
-*,
-*::before,
-*::after {
+:root {
+  /* --- Mode DARK (défaut) --- */
+  --bg-primary:     #09090E;       /* Fond principal : noir riche */
+  --bg-secondary:   #0F0F17;       /* Fond surfaces : légèrement plus clair */
+  --bg-card:        rgba(255,255,255,0.04);
+  --text-primary:   #F2F0EB;       /* Blanc cassé chaud */
+  --text-secondary: rgba(242,240,235,0.5);
+  --text-muted:     rgba(242,240,235,0.25);
+  --accent:         #00E5FF;       /* Cyan vif — accent principal */
+  --accent-glow:    rgba(0,229,255,0.15);
+  --accent-2:       #7C3AED;       /* Violet accent secondaire */
+  --chrome:         #A8A8B8;       /* Chrome / argent */
+  --border:         rgba(255,255,255,0.07);
+  --border-hover:   rgba(255,255,255,0.15);
+  --glass:          rgba(255,255,255,0.04);
+  --glass-border:   rgba(255,255,255,0.08);
+  --shadow:         rgba(0,0,0,0.6);
+}
+
+[data-theme="light"] {
+  /* --- Mode LIGHT (élégant, luxe, raffiné) --- */
+  --bg-primary:     #F0EDE8;       /* Blanc cassé chaud — pas de blanc pur */
+  --bg-secondary:   #FAFAF8;       /* Surface légèrement plus claire */
+  --bg-card:        rgba(255,255,255,0.7);
+  --text-primary:   #0A0A12;       /* Noir quasi pur */
+  --text-secondary: rgba(10,10,18,0.55);
+  --text-muted:     rgba(10,10,18,0.3);
+  --accent:         #0057FF;       /* Bleu électrique — accent light mode */
+  --accent-glow:    rgba(0,87,255,0.12);
+  --accent-2:       #6D28D9;
+  --chrome:         #6B6B7B;
+  --border:         rgba(0,0,0,0.07);
+  --border-hover:   rgba(0,0,0,0.15);
+  --glass:          rgba(255,255,255,0.6);
+  --glass-border:   rgba(0,0,0,0.06);
+  --shadow:         rgba(0,0,0,0.12);
+}
+
+/* ============================================================
+   TRANSITIONS DE THÈME — tout change en 300ms
+   ============================================================ */
+*, *::before, *::after {
   cursor: none !important;
   box-sizing: border-box;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Exceptions — pas de transition sur les animations */
+.no-transition,
+canvas,
+[class*="motion"] {
+  transition: none !important;
 }
 
 /* ============================================================
@@ -20,73 +73,137 @@ html {
 }
 
 body {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   overflow-x: hidden;
   font-family: var(--font-space-grotesk), sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ============================================================
-   SCROLLBAR — Fine barre cyan sur fond noir
+   SCROLLBAR
    ============================================================ */
-::-webkit-scrollbar {
-  width: 3px;
-}
-::-webkit-scrollbar-track {
-  background: #000;
-}
-::-webkit-scrollbar-thumb {
-  background: #00FFFF;
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #7C3AED;
-}
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; opacity: 0.6; }
 
 /* ============================================================
    COMPOSANTS UTILITAIRES
    ============================================================ */
 @layer components {
 
-  /* Glassmorphism — fond semi-transparent flouté */
+  /* Glassmorphism adaptatif selon le thème */
   .glass-card {
-    @apply bg-white/5 border border-white/10 backdrop-blur-md;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
-  /* Texte avec halo cyan */
-  .neon-text-cyan {
+  /* Texte avec halo accentué */
+  .neon-text {
     text-shadow:
-      0 0 10px rgba(0, 255, 255, 0.8),
-      0 0 20px rgba(0, 255, 255, 0.5),
-      0 0 40px rgba(0, 255, 255, 0.2);
+      0 0 12px var(--accent-glow),
+      0 0 24px var(--accent-glow);
   }
 
-  /* Texte avec halo violet */
-  .neon-text-purple {
-    text-shadow:
-      0 0 10px rgba(124, 58, 237, 0.8),
-      0 0 20px rgba(124, 58, 237, 0.5);
-  }
-
-  /* Bordure avec halo néon */
+  /* Bordure cyber */
   .cyber-border {
-    @apply border border-neon-cyan/30;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.08), inset 0 0 15px rgba(0, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    box-shadow:
+      0 0 20px var(--accent-glow),
+      inset 0 0 20px rgba(0,0,0,0.05);
   }
 
-  /* Bouton primaire cyan */
+  /* Bouton primaire */
   .btn-primary {
-    @apply font-orbitron text-xs tracking-widest uppercase px-8 py-4
-           bg-neon-cyan text-black hover:bg-white
-           transition-colors duration-200;
+    @apply font-orbitron text-[11px] tracking-[0.25em] uppercase px-8 py-4;
+    background: var(--accent);
+    color: var(--bg-primary);
+    transition: filter 0.2s ease, transform 0.15s ease !important;
+  }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
   }
 
-  /* Bouton secondaire — outline cyan */
+  /* Bouton secondaire */
   .btn-secondary {
-    @apply font-orbitron text-xs tracking-widest uppercase px-8 py-4
-           border border-neon-cyan/50 text-neon-cyan
-           hover:border-neon-cyan hover:bg-neon-cyan/10
-           transition-all duration-200;
+    @apply font-orbitron text-[11px] tracking-[0.25em] uppercase px-8 py-4;
+    border: 1px solid var(--border-hover);
+    color: var(--accent);
+    background: transparent;
+    transition: all 0.2s ease !important;
   }
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    transform: translateY(-1px);
+  }
+
+  /* Section label */
+  .section-label {
+    @apply font-orbitron text-[10px] tracking-[0.6em] uppercase;
+    color: var(--accent);
+  }
+
+  /* Dégradé de texte premium */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ============================================================
+   ANIMATIONS OPTIMISÉES — GPU uniquement (transform + opacity)
+   ============================================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  94% { opacity: 0.7; }
+  96% { opacity: 1; }
+  98% { opacity: 0.85; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--accent-glow); }
+  50%       { box-shadow: 0 0 24px var(--accent-glow), 0 0 48px var(--accent-glow); }
+}
+
+/* ============================================================
+   SMOOTH SCROLL PREMIUM
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* ============================================================
+   PAGE TRANSITIONS (ajouté sur les sections via Framer Motion)
+   ============================================================ */
+.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }

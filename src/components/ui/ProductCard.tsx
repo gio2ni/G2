@@ -1,135 +1,106 @@
 'use client';
 
-// Carte produit — glassmorphism + hover glow + ajout panier intégré
-// Le sélecteur de taille et le bouton "Ajouter" sont gérés en state local (useState)
-// L'action panier est déléguée au store Zustand via addItem()
+// ProductCard — React.memo pour éviter les re-renders inutiles
+// Design premium avec CSS variables (s'adapte dark/light)
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useCartStore } from '@/lib/store';
 import type { Product } from '@/lib/products';
 
-interface ProductCardProps {
+interface Props {
   product: Product;
-  // Délai optionnel pour l'animation d'apparition en cascade
   animationDelay?: number;
 }
 
-export default function ProductCard({ product, animationDelay = 0 }: ProductCardProps) {
-  const { addItem } = useCartStore();
+const ProductCard = memo(function ProductCard({ product, animationDelay = 0 }: Props) {
+  const addItem = useCartStore(useCallback((s) => s.addItem, []));
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [added, setAdded] = useState(false);
 
-  // Ajout au panier — feedback visuel temporaire "Ajouté ✓"
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Empêche la navigation du Link parent
+  const handleAdd = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
-
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      size: selectedSize,
-      quantity: 1,
-      image: product.image,
-    });
-
+    addItem({ id: product.id, name: product.name, price: product.price,
+              size: selectedSize, quantity: 1, image: product.image });
     setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
+    setTimeout(() => setAdded(false), 1400);
+  }, [addItem, product, selectedSize]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: animationDelay }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.45, delay: animationDelay, ease: [0.4, 0, 0.2, 1] }}
     >
       <Link href={`/products/${product.id}`}>
         <motion.article
-          className="glass-card group relative overflow-hidden"
-          whileHover={{ y: -6 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+          className="group relative overflow-hidden"
+          style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+          whileHover={{ y: -5, boxShadow: '0 20px 60px var(--shadow)' }}
+          transition={{ type: 'spring', stiffness: 280, damping: 24 }}
         >
-          {/* ---- Image produit ---- */}
-          <div className="relative aspect-[3/4] overflow-hidden bg-black/40">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+          {/* Image */}
+          <div className="relative aspect-[3/4] overflow-hidden" style={{ background: 'var(--bg-secondary)' }}>
+            <Image src={product.image} alt={product.name} fill
+              className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-103"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              loading="lazy"
             />
 
-            {/* Overlay de glow au hover */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-neon-cyan/10 via-transparent to-transparent" />
+            {/* Overlay hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+                 style={{ background: 'linear-gradient(to top, var(--accent-glow) 0%, transparent 60%)' }} />
 
-            {/* Ligne de brillance au hover (effet lumière) */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full"
-              whileHover={{ translateX: '200%' }}
-              transition={{ duration: 0.8 }}
-            />
-
-            {/* Badges */}
-            <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-              {product.isNew && (
-                <span className="font-orbitron text-[9px] tracking-widest bg-neon-cyan text-black px-2 py-0.5 uppercase">
-                  New
-                </span>
-              )}
-            </div>
+            {/* Badge New */}
+            {product.isNew && (
+              <span className="absolute top-3 left-3 font-orbitron text-[9px] tracking-widest uppercase px-2 py-1"
+                    style={{ background: 'var(--accent)', color: 'var(--bg-primary)' }}>
+                New
+              </span>
+            )}
           </div>
 
-          {/* ---- Infos produit ---- */}
+          {/* Infos */}
           <div className="p-4 flex flex-col gap-3">
-            {/* Nom et prix */}
             <div className="flex justify-between items-start gap-2">
-              <h3 className="font-orbitron text-xs text-white tracking-wide leading-snug flex-1">
+              <h3 className="font-orbitron text-xs tracking-wide leading-snug flex-1"
+                  style={{ color: 'var(--text-primary)' }}>
                 {product.name}
               </h3>
-              <span className="font-orbitron text-neon-cyan text-sm flex-shrink-0">
+              <span className="font-orbitron text-sm flex-shrink-0"
+                    style={{ color: 'var(--accent)' }}>
                 ${product.price}
               </span>
             </div>
 
-            {/* Catégorie */}
-            <p className="font-space-grotesk text-chrome/40 text-xs uppercase tracking-widest">
-              {product.category}
-            </p>
-
-            {/* Sélecteur de taille */}
+            {/* Tailles */}
             <div className="flex flex-wrap gap-1.5">
               {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setSelectedSize(size);
-                  }}
-                  className={`font-orbitron text-[9px] px-2 py-1 border tracking-widest transition-all duration-150 ${
-                    selectedSize === size
-                      ? 'bg-neon-cyan text-black border-neon-cyan'
-                      : 'border-white/20 text-white/40 hover:border-neon-cyan/50 hover:text-white/70'
-                  }`}
-                >
+                <button key={size}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedSize(size); }}
+                  className="font-orbitron text-[9px] px-2 py-1 tracking-widest transition-all duration-150"
+                  style={{
+                    border: `1px solid ${selectedSize === size ? 'var(--accent)' : 'var(--border)'}`,
+                    background: selectedSize === size ? 'var(--accent)' : 'transparent',
+                    color: selectedSize === size ? 'var(--bg-primary)' : 'var(--text-muted)',
+                  }}>
                   {size}
                 </button>
               ))}
             </div>
 
-            {/* Bouton ajouter au panier */}
-            <button
-              onClick={handleAddToCart}
-              className={`w-full font-orbitron text-[10px] tracking-widest uppercase py-3 transition-all duration-200 ${
-                added
-                  ? 'bg-neon-purple/80 text-white border border-neon-purple/60'
-                  : 'border border-neon-cyan/40 text-neon-cyan hover:bg-neon-cyan hover:text-black hover:border-neon-cyan'
-              }`}
-            >
+            {/* Bouton panier */}
+            <button onClick={handleAdd}
+              className="w-full font-orbitron text-[10px] tracking-widest uppercase py-3 transition-all duration-200"
+              style={{
+                border: `1px solid ${added ? 'var(--accent-2)' : 'var(--border-hover)'}`,
+                background: added ? 'var(--accent-2)' : 'transparent',
+                color: added ? '#fff' : 'var(--accent)',
+              }}>
               {added ? 'Ajouté ✓' : 'Ajouter au panier'}
             </button>
           </div>
@@ -137,4 +108,6 @@ export default function ProductCard({ product, animationDelay = 0 }: ProductCard
       </Link>
     </motion.div>
   );
-}
+});
+
+export default ProductCard;

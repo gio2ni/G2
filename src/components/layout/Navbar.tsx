@@ -1,11 +1,13 @@
 'use client';
 
-// Navbar fixée en haut — transparente au début, frosted-glass après 40px de scroll
-// Badge panier dynamique via Zustand
+// Navbar premium — transparent → frosted glass au scroll
+// Inclut ThemeToggle + badge panier + menu mobile animé
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore, useCartCount } from '@/lib/store';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -13,107 +15,137 @@ export default function Navbar() {
   const { toggleCart } = useCartStore();
   const cartCount = useCartCount();
 
-  // Passe en mode "frosted glass" dès 40px de scroll
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+  // useCallback évite de recréer la fonction à chaque render
+  const onScroll = useCallback(() => {
+    setScrolled(window.scrollY > 50);
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onScroll]);
+
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  const links = [
+    { href: '/', label: 'Accueil' },
+    { href: '/products', label: 'Shop' },
+  ];
+
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-30 transition-all duration-500 ${
-        scrolled
-          ? 'bg-black/80 backdrop-blur-md border-b border-white/10'
-          : 'bg-transparent'
-      }`}
-    >
-      <nav className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-        {/* Logo G2 */}
-        <Link
-          href="/"
-          className="font-orbitron font-black text-2xl text-white hover:text-neon-cyan transition-colors duration-200 neon-text-cyan"
-        >
-          G2
-        </Link>
+    <>
+      <header
+        className="fixed top-0 left-0 right-0 z-30 transition-all duration-500"
+        style={{
+          background: scrolled ? 'var(--glass)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+          borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+        }}
+      >
+        <nav className="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between gap-8">
+          {/* Logo */}
+          <Link href="/"
+            className="font-orbitron font-black text-xl tracking-widest neon-text flex-shrink-0"
+            style={{ color: 'var(--text-primary)' }}>
+            G2
+          </Link>
 
-        {/* Liens desktop — cachés sur mobile */}
-        <div className="hidden md:flex items-center gap-10">
-          {[
-            ['/', 'ACCUEIL'],
-            ['/products', 'SHOP'],
-          ].map(([href, label]) => (
-            <Link
-              key={href}
-              href={href}
-              className="font-orbitron text-[11px] tracking-[0.3em] text-white/50 hover:text-white transition-colors duration-200"
+          {/* Liens desktop */}
+          <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
+            {links.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="font-orbitron text-[10px] tracking-[0.3em] uppercase transition-colors duration-200"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Actions droite */}
+          <div className="flex items-center gap-3">
+            {/* Theme toggle */}
+            <ThemeToggle />
+
+            {/* Bouton panier */}
+            <button
+              onClick={toggleCart}
+              className="relative flex items-center gap-2 font-orbitron text-[10px] tracking-[0.3em] uppercase transition-colors duration-200 px-3 py-2 rounded"
+              style={{ color: 'var(--text-secondary)', border: '1px solid var(--border)' }}
             >
-              {label}
-            </Link>
-          ))}
-        </div>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
+              </svg>
+              <span className="hidden sm:inline">Panier</span>
+              {/* Badge */}
+              {cartCount > 0 && (
+                <motion.span
+                  key={cartCount}
+                  initial={{ scale: 0.5 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-orbitron"
+                  style={{ background: 'var(--accent)', color: 'var(--bg-primary)' }}
+                >
+                  {cartCount > 9 ? '9+' : cartCount}
+                </motion.span>
+              )}
+            </button>
 
-        {/* Côté droit — panier + menu mobile */}
-        <div className="flex items-center gap-4">
-          {/* Bouton panier */}
-          <button
-            onClick={toggleCart}
-            className="relative flex items-center gap-2 font-orbitron text-[11px] tracking-[0.3em] uppercase text-white/50 hover:text-white transition-colors duration-200"
-            aria-label="Ouvrir le panier"
-          >
-            <span>PANIER</span>
-            {/* Badge — nombre d'articles */}
-            {cartCount > 0 && (
-              <span className="flex items-center justify-center w-5 h-5 bg-neon-cyan text-black text-[10px] font-orbitron rounded-full">
-                {cartCount > 9 ? '9+' : cartCount}
-              </span>
-            )}
-          </button>
-
-          {/* Bouton hamburger — mobile uniquement */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col gap-1.5 p-1"
-            aria-label="Menu"
-          >
-            <span
-              className={`block w-5 h-px bg-white transition-all duration-200 ${
-                menuOpen ? 'rotate-45 translate-y-2' : ''
-              }`}
-            />
-            <span
-              className={`block w-5 h-px bg-white transition-all duration-200 ${
-                menuOpen ? 'opacity-0' : ''
-              }`}
-            />
-            <span
-              className={`block w-5 h-px bg-white transition-all duration-200 ${
-                menuOpen ? '-rotate-45 -translate-y-2' : ''
-              }`}
-            />
-          </button>
-        </div>
-      </nav>
-
-      {/* Menu mobile déroulant */}
-      {menuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-md border-t border-white/10 px-4 py-6 flex flex-col gap-6">
-          {[
-            ['/', 'ACCUEIL'],
-            ['/products', 'SHOP'],
-            ['/cart', 'PANIER'],
-          ].map(([href, label]) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setMenuOpen(false)}
-              className="font-orbitron text-sm tracking-[0.3em] text-white/70 hover:text-white transition-colors"
+            {/* Hamburger mobile */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden flex flex-col gap-1 p-1.5 justify-center items-center w-9 h-9"
+              aria-label="Menu"
             >
-              {label}
-            </Link>
-          ))}
-        </div>
-      )}
-    </header>
+              <span className={`block w-5 h-px transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`}
+                style={{ background: 'var(--text-primary)' }} />
+              <span className={`block w-5 h-px transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}
+                style={{ background: 'var(--text-primary)' }} />
+              <span className={`block w-5 h-px transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}
+                style={{ background: 'var(--text-primary)' }} />
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      {/* Menu mobile */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-16 left-0 right-0 z-20 md:hidden"
+            style={{
+              background: 'var(--bg-secondary)',
+              borderBottom: '1px solid var(--border)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            <nav className="flex flex-col px-5 py-6 gap-5">
+              {[...links, { href: '/cart', label: 'Panier' }].map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={closeMenu}
+                  className="font-orbitron text-sm tracking-[0.3em] uppercase"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

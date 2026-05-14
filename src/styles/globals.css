@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CURSEUR — Le CustomCursor remplace le curseur système
+   ============================================================ */
+*,
+*::before,
+*::after {
+  cursor: none !important;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+  font-family: var(--font-space-grotesk), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   SCROLLBAR — Fine barre cyan sur fond noir
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #00FFFF;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
+}
+
+/* ============================================================
+   COMPOSANTS UTILITAIRES
+   ============================================================ */
+@layer components {
+
+  /* Glassmorphism — fond semi-transparent flouté */
+  .glass-card {
+    @apply bg-white/5 border border-white/10 backdrop-blur-md;
+  }
+
+  /* Texte avec halo cyan */
+  .neon-text-cyan {
+    text-shadow:
+      0 0 10px rgba(0, 255, 255, 0.8),
+      0 0 20px rgba(0, 255, 255, 0.5),
+      0 0 40px rgba(0, 255, 255, 0.2);
+  }
+
+  /* Texte avec halo violet */
+  .neon-text-purple {
+    text-shadow:
+      0 0 10px rgba(124, 58, 237, 0.8),
+      0 0 20px rgba(124, 58, 237, 0.5);
+  }
+
+  /* Bordure avec halo néon */
+  .cyber-border {
+    @apply border border-neon-cyan/30;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.08), inset 0 0 15px rgba(0, 255, 255, 0.02);
+  }
+
+  /* Bouton primaire cyan */
+  .btn-primary {
+    @apply font-orbitron text-xs tracking-widest uppercase px-8 py-4
+           bg-neon-cyan text-black hover:bg-white
+           transition-colors duration-200;
+  }
+
+  /* Bouton secondaire — outline cyan */
+  .btn-secondary {
+    @apply font-orbitron text-xs tracking-widest uppercase px-8 py-4
+           border border-neon-cyan/50 text-neon-cyan
+           hover:border-neon-cyan hover:bg-neon-cyan/10
+           transition-all duration-200;
+  }
+}

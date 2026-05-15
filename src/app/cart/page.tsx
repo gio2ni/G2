@@ -27,7 +27,7 @@ export default function CartPage() {
           <p className="font-orbitron text-white/30 text-sm tracking-[0.4em] uppercase mb-2">
             Panier vide
           </p>
-          <p className="font-space-grotesk text-white/20 text-sm">
+          <p className="font-dm-sans text-white/20 text-sm">
             Votre panier ne contient aucun article.
           </p>
         </div>
@@ -52,7 +52,7 @@ export default function CartPage() {
               Panier
             </h1>
           </div>
-          <span className="font-space-grotesk text-chrome/40 text-sm">
+          <span className="font-dm-sans text-chrome/40 text-sm">
             {items.reduce((s, i) => s + i.quantity, 0)} article
             {items.reduce((s, i) => s + i.quantity, 0) > 1 ? 's' : ''}
           </span>
@@ -87,7 +87,7 @@ export default function CartPage() {
                     <p className="font-orbitron text-sm text-white tracking-wide truncate">
                       {item.name}
                     </p>
-                    <p className="font-space-grotesk text-chrome/50 text-xs mt-1">
+                    <p className="font-dm-sans text-chrome/50 text-xs mt-1">
                       Taille : {item.size}
                     </p>
                     <p className="font-orbitron text-neon-cyan text-sm mt-2">
@@ -136,13 +136,13 @@ export default function CartPage() {
         <div className="glass-card p-6 flex flex-col gap-4">
           {/* Ligne sous-total */}
           <div className="flex justify-between text-sm">
-            <span className="font-space-grotesk text-chrome/50">Sous-total</span>
+            <span className="font-dm-sans text-chrome/50">Sous-total</span>
             <span className="font-orbitron text-white">${total.toFixed(2)}</span>
           </div>
 
           {/* Ligne livraison */}
           <div className="flex justify-between text-sm">
-            <span className="font-space-grotesk text-chrome/50">Livraison</span>
+            <span className="font-dm-sans text-chrome/50">Livraison</span>
             <span className="font-orbitron text-neon-cyan text-xs tracking-widest uppercase">
               {total >= 150 ? 'Gratuite' : 'Calculée à la commande'}
             </span>

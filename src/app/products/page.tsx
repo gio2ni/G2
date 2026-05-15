@@ -45,7 +45,7 @@ export default function ProductsPage() {
         <h1 className="font-orbitron text-4xl md:text-5xl text-white tracking-wide mb-2">
           Collection
         </h1>
-        <p className="font-space-grotesk text-chrome/40 text-sm">
+        <p className="font-dm-sans text-chrome/40 text-sm">
           {filtered.length} pièce{filtered.length > 1 ? 's' : ''}
         </p>
       </div>

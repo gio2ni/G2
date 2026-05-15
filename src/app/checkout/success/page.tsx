@@ -52,7 +52,7 @@ export default function SuccessPage() {
           Merci pour votre achat
         </h1>
 
-        <p className="font-space-grotesk text-base max-w-sm leading-relaxed"
+        <p className="font-dm-sans text-base max-w-sm leading-relaxed"
            style={{ color: 'var(--text-secondary)' }}>
           Votre commande a été reçue et est en cours de traitement.
           Un email de confirmation vous sera envoyé sous peu.

@@ -6,7 +6,7 @@ export default function NewsletterForm() {
       <input
         type="email"
         placeholder="votre@email.com"
-        className="flex-1 px-4 py-3 font-space-grotesk text-sm focus:outline-none transition-colors"
+        className="flex-1 px-4 py-3 font-dm-sans text-sm focus:outline-none transition-colors"
         style={{
           background: 'var(--glass)',
           border: '1px solid var(--border)',

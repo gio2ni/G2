@@ -38,7 +38,7 @@ export default function CartSidebar() {
                     style={{ color: 'var(--text-primary)' }}>
                 Panier
                 {items.length > 0 && (
-                  <span className="ml-2 font-space-grotesk text-xs" style={{ color: 'var(--text-muted)' }}>
+                  <span className="ml-2 font-dm-sans text-xs" style={{ color: 'var(--text-muted)' }}>
                     ({items.reduce((s, i) => s + i.quantity, 0)})
                   </span>
                 )}
@@ -72,7 +72,7 @@ export default function CartSidebar() {
                     <div className="flex-1 min-w-0">
                       <p className="font-orbitron text-[11px] tracking-wide truncate"
                          style={{ color: 'var(--text-primary)' }}>{item.name}</p>
-                      <p className="font-space-grotesk text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                      <p className="font-dm-sans text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
                         Taille: {item.size}
                       </p>
                       <p className="font-orbitron text-xs mt-1" style={{ color: 'var(--accent)' }}>

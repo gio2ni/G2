@@ -13,7 +13,7 @@ export default function Footer() {
                   style={{ color: 'var(--text-primary)' }}>
               G2
             </Link>
-            <p className="font-space-grotesk text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
+            <p className="font-dm-sans text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
               Future Luxury Streetwear
             </p>
           </div>
@@ -47,7 +47,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-3 pt-8"
              style={{ borderTop: '1px solid var(--border)' }}>
-          <p className="font-space-grotesk text-xs" style={{ color: 'var(--text-muted)' }}>
+          <p className="font-dm-sans text-xs" style={{ color: 'var(--text-muted)' }}>
             © {year} G2. All rights reserved.
           </p>
           <p className="font-orbitron text-[9px] tracking-widest uppercase"

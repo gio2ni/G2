@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Orbitron, Space_Grotesk } from 'next/font/google';
+import { Orbitron, DM_Sans } from 'next/font/google';
 import '@/styles/globals.css';
 
 import { ThemeProvider } from '@/lib/theme';
@@ -7,6 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CartSidebar from '@/components/ui/CartSidebar';
 import Loader from '@/components/ui/Loader';
+import PixelBackground from '@/components/ui/PixelBackground';
 
 const orbitron = Orbitron({
   subsets: ['latin'],
@@ -14,9 +15,9 @@ const orbitron = Orbitron({
   display: 'swap',
 });
 
-const spaceGrotesk = Space_Grotesk({
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-dm-sans',
   display: 'swap',
 });
 
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     // suppressHydrationWarning évite le flash lors de la lecture du thème localStorage
-    <html lang="fr" className={`${orbitron.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={`${orbitron.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <body>
         {/*
           Script inline exécuté AVANT le paint — lit le thème sauvegardé
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
 
         <ThemeProvider>
+          <PixelBackground />
           <Loader />
           <Navbar />
           <main>{children}</main>

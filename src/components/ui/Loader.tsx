@@ -1,78 +1,71 @@
 'use client';
 
-// Loader premium — disparaît après 2s, animation plus rapide et légère
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Loader() {
   const [visible, setVisible] = useState(true);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Simule une progression fluide
-    const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) { clearInterval(interval); return 100; }
-        return p + 4;
-      });
-    }, 60);
-
-    const timer = setTimeout(() => setVisible(false), 2000);
-    return () => { clearTimeout(timer); clearInterval(interval); };
+    // Le G2 fait 1 tour complet (1.4s) puis le loader disparaît (0.6s)
+    const timer = setTimeout(() => setVisible(false), 2200);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
-          style={{ background: 'var(--bg-primary)' }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center"
+          style={{
+            background: 'linear-gradient(180deg, #1565C0 0%, #42A5F5 50%, #E3F2FD 100%)',
+            backdropFilter: 'blur(0px)',
+          }}
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          exit={{ opacity: 0, scale: 1.04 }}
+          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
         >
-          {/* Ligne scan */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="w-full h-px opacity-20 animate-scan-line"
-                 style={{ background: 'var(--accent)' }} />
+          {/* Card glass avec G2 qui tourne */}
+          <div style={{ perspective: '600px' }}>
+            <motion.div
+              className="flex flex-col items-center justify-center gap-4"
+              style={{
+                width: 180,
+                height: 180,
+                background: 'rgba(255,255,255,0.22)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                border: '1.5px solid rgba(255,255,255,0.6)',
+                borderRadius: 28,
+                boxShadow: '0 24px 64px rgba(21,101,192,0.25), inset 0 1px 0 rgba(255,255,255,0.7)',
+              }}
+              initial={{ rotateY: 0, opacity: 0, scale: 0.85 }}
+              animate={{ rotateY: 360, opacity: 1, scale: 1 }}
+              transition={{
+                rotateY: { duration: 1.4, ease: [0.4, 0, 0.2, 1] },
+                opacity: { duration: 0.3 },
+                scale:   { duration: 0.4, ease: 'easeOut' },
+              }}
+            >
+              <h1
+                className="font-orbitron font-black"
+                style={{
+                  fontSize: 72,
+                  lineHeight: 1,
+                  color: 'white',
+                  textShadow: '0 2px 24px rgba(21,101,192,0.5)',
+                }}
+              >
+                G2
+              </h1>
+              <p
+                className="font-orbitron text-[9px] tracking-[0.5em] uppercase"
+                style={{ color: 'rgba(255,255,255,0.7)' }}
+              >
+                Loading
+              </p>
+            </motion.div>
           </div>
-
-          {/* Contenu centré */}
-          <motion.div
-            className="relative flex flex-col items-center gap-5"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          >
-            {/* Logo */}
-            <h1 className="font-orbitron font-black text-8xl leading-none neon-text"
-                style={{ color: 'var(--text-primary)' }}>
-              G2
-            </h1>
-
-            {/* Sous-titre */}
-            <p className="font-orbitron text-[10px] tracking-[0.6em] uppercase animate-flicker"
-               style={{ color: 'var(--accent)' }}>
-              Future Luxury
-            </p>
-
-            {/* Barre de progression */}
-            <div className="w-36 h-px mt-3 overflow-hidden"
-                 style={{ background: 'var(--border)' }}>
-              <motion.div
-                className="h-full"
-                style={{ background: 'var(--accent)', width: `${progress}%` }}
-                transition={{ ease: 'easeOut' }}
-              />
-            </div>
-
-            {/* Pourcentage */}
-            <p className="font-orbitron text-[9px] tracking-widest"
-               style={{ color: 'var(--text-muted)' }}>
-              {progress}%
-            </p>
-          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

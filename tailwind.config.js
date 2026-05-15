@@ -27,8 +27,8 @@ module.exports = {
 
       // --- Polices ---
       fontFamily: {
-        orbitron:        ['var(--font-orbitron)', 'sans-serif'],
-        'space-grotesk': ['var(--font-space-grotesk)', 'sans-serif'],
+        orbitron:   ['var(--font-orbitron)', 'sans-serif'],
+        'dm-sans':  ['var(--font-dm-sans)', 'sans-serif'],
       },
 
       // --- Fonds ---

@@ -49,7 +49,7 @@ export default function HomePage() {
             G2
           </h1>
 
-          <p className="font-space-grotesk text-lg md:text-xl max-w-md mb-10 leading-relaxed"
+          <p className="font-dm-sans text-lg md:text-xl max-w-md mb-10 leading-relaxed"
              style={{ color: 'rgba(255,255,255,0.85)', textShadow: '0 1px 8px rgba(0,0,0,0.2)' }}>
             Wear the signal. Own the void.
           </p>
@@ -104,7 +104,7 @@ export default function HomePage() {
                 Nouvelle<br />
                 <span style={{ color: 'var(--accent)' }}>Collection</span>
               </h2>
-              <p className="font-space-grotesk text-base leading-relaxed mb-8"
+              <p className="font-dm-sans text-base leading-relaxed mb-8"
                  style={{ color: 'var(--text-secondary)' }}>
                 Des pièces pensées pour la prochaine décennie. Chaque tissu, chaque couture,
                 conçus à l&apos;intersection de la technologie et du style.
@@ -166,7 +166,7 @@ export default function HomePage() {
                     <p className="font-orbitron text-xs tracking-wide" style={{ color: 'var(--text-primary)' }}>
                       {p.name}
                     </p>
-                    <p className="font-space-grotesk text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+                    <p className="font-dm-sans text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
                       {p.category}
                     </p>
                   </div>
@@ -195,12 +195,12 @@ export default function HomePage() {
             Construit pour le{' '}
             <span style={{ color: 'var(--accent)' }}>prochain signal</span>
           </h2>
-          <p className="font-space-grotesk text-base leading-loose mb-5"
+          <p className="font-dm-sans text-base leading-loose mb-5"
              style={{ color: 'var(--text-secondary)' }}>
             G2 n&apos;est pas une marque. G2 est une fréquence. Chaque pièce est conçue
             à l&apos;intersection de l&apos;utilitaire et de l&apos;art — là où la fonction rencontre le vide.
           </p>
-          <p className="font-space-grotesk text-sm leading-relaxed"
+          <p className="font-dm-sans text-sm leading-relaxed"
              style={{ color: 'var(--text-muted)' }}>
             Nous ne suivons pas les tendances. Nous construisons le terrain sur lequel elles courent.
           </p>
@@ -238,7 +238,7 @@ function SectionHeader({ label, title, subtitle }: { label: string; title: strin
         {title}
       </h2>
       {subtitle && (
-        <p className="font-space-grotesk text-sm mt-3" style={{ color: 'var(--text-muted)' }}>{subtitle}</p>
+        <p className="font-dm-sans text-sm mt-3" style={{ color: 'var(--text-muted)' }}>{subtitle}</p>
       )}
     </div>
   );

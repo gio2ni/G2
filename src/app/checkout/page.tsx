@@ -71,7 +71,7 @@ function CheckoutForm() {
 
       {/* Message d'erreur */}
       {errorMsg && (
-        <p className="font-space-grotesk text-sm text-red-400 text-center">{errorMsg}</p>
+        <p className="font-dm-sans text-sm text-red-400 text-center">{errorMsg}</p>
       )}
 
       {/* Bouton payer */}
@@ -94,7 +94,7 @@ function CheckoutForm() {
         )}
       </button>
 
-      <p className="font-space-grotesk text-xs text-center" style={{ color: 'var(--text-muted)' }}>
+      <p className="font-dm-sans text-xs text-center" style={{ color: 'var(--text-muted)' }}>
         🔒 Paiement sécurisé par Stripe — données chiffrées SSL
       </p>
     </form>
@@ -178,14 +178,14 @@ export default function CheckoutPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                <span className="font-space-grotesk text-sm" style={{ color: 'var(--text-muted)' }}>
+                <span className="font-dm-sans text-sm" style={{ color: 'var(--text-muted)' }}>
                   Chargement...
                 </span>
               </div>
             ) : error ? (
               <div className="p-5 rounded" style={{ border: '1px solid var(--border)', background: 'var(--glass)' }}>
-                <p className="font-space-grotesk text-sm text-red-400 mb-4">{error}</p>
-                <p className="font-space-grotesk text-xs" style={{ color: 'var(--text-muted)' }}>
+                <p className="font-dm-sans text-sm text-red-400 mb-4">{error}</p>
+                <p className="font-dm-sans text-xs" style={{ color: 'var(--text-muted)' }}>
                   Pour activer Stripe, ajouter dans <code>.env.local</code> :<br />
                   <code className="text-neon-cyan">STRIPE_SECRET_KEY=sk_test_...</code><br />
                   <code className="text-neon-cyan">NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...</code>
@@ -214,7 +214,7 @@ export default function CheckoutPage() {
                     <p className="font-orbitron text-xs tracking-wide" style={{ color: 'var(--text-primary)' }}>
                       {item.name}
                     </p>
-                    <p className="font-space-grotesk text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                    <p className="font-dm-sans text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
                       {item.size} × {item.quantity}
                     </p>
                   </div>
@@ -243,7 +243,7 @@ export default function CheckoutPage() {
                 '✓ Retours gratuits sous 30 jours',
                 '✓ Livraison offerte dès 150€',
               ].map((item) => (
-                <p key={item} className="font-space-grotesk text-xs" style={{ color: 'var(--text-muted)' }}>
+                <p key={item} className="font-dm-sans text-xs" style={{ color: 'var(--text-muted)' }}>
                   {item}
                 </p>
               ))}

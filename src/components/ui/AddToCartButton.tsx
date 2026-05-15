@@ -49,7 +49,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         {added ? 'Ajouté au panier ✓' : `Ajouter — $${product.price}`}
       </button>
 
-      <p className="font-space-grotesk text-xs" style={{ color: 'var(--text-muted)' }}>
+      <p className="font-dm-sans text-xs" style={{ color: 'var(--text-muted)' }}>
         Livraison offerte dès 150€ · Retours sous 30 jours
       </p>
     </div>

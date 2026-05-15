@@ -102,7 +102,7 @@ export default function ProductPage({
           <div className="h-px bg-white/10" />
 
           {/* Description */}
-          <p className="font-space-grotesk text-chrome/70 text-base leading-relaxed">
+          <p className="font-dm-sans text-chrome/70 text-base leading-relaxed">
             {product.description}
           </p>
 

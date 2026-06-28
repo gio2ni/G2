@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Creature Legends</string>
+    <string name="start_battle">Start Battle</string>
+    <string name="victory">Victory!</string>
+    <string name="defeat">Defeat!</string>
+</resources>
